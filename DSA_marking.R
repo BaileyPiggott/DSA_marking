@@ -70,5 +70,18 @@ all_samples <- Filter( # remove columns where only one report contains that word
 
 # bind with scores ------------------------
 
+DSA_scores <- read.csv("DSA Scores.csv") %>% select(ID, PD, CD, Pre_Design, DD, Validation, Implementation, Process)
+# convert ID column to numeric for joining
+DSA_scores$ID <- as.numeric(DSA_scores$ID)
+all_samples$ID <- as.numeric(all_samples$ID)
+
+DSA_data <- full_join(DSA_scores, all_samples, by = "ID") # join so scores and text analysis are in the same order
+
+DSA_scores <- DSA_data %>% select(PD:Process) # columns of scores
+DSA_text <- DSA_data %>% select(-c(ID:Process)) # columns of text analysis data
 
 # export for analysis in matlab ------------------
+
+write.csv(DSA_scores, file ="DSA_scores.csv")
+
+write.csv(DSA_text, file ="DSA_text.csv")
