@@ -1,7 +1,7 @@
 
 ngram_freq <- function(input_text, disp_name, ... ){
   
-require(RWeka, tm, magrittr, dplyr)  
+#  require(RWeka, tm, magrittr, dplyr)  
   
 text_corpus <- Corpus(VectorSource(input_text))
 
@@ -24,7 +24,7 @@ text_corpus <- Corpus(VectorSource(input_text))
   
   freq <- sort(colSums(as.matrix(test)), decreasing=TRUE)   # order by decreasing phrase frequency
   
-  ngrams <- data.frame(word=names(freq), freq=freq) %>% filter(freq >= 2) # phrase frequency data frame
+  ngrams <- data.frame(word=names(freq), freq=freq) #%>% filter(freq >= 2) # phrase frequency data frame
   rownames(ngrams) <- NULL
 
   colnames(ngrams)[2]<- disp_name # rename freq column to input name for later merge

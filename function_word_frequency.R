@@ -21,7 +21,7 @@ word_freq <- function(input_text, disp_name, ... ){
   dtm <- DocumentTermMatrix(text_corpus)  
   freq <- sort(colSums(as.matrix(dtm)), decreasing=TRUE)   # order by decreasing word frequency
   
-  wf <- data.frame(word=names(freq), freq=freq) %>% filter(freq > 1) # word frequency data frame
+  wf <- data.frame(word=names(freq), freq=freq) #%>% filter(freq > 1) # word frequency data frame
   
   colnames(wf)[2]<-disp_name
   
