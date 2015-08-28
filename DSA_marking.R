@@ -1,16 +1,15 @@
 
-library(ggplot2)
+# libraries ------------
 library(tidyr)
 library(dplyr)
 library(magrittr)
 library(NLP) # required for tm package
-library(tm) 
-library(RWeka)
+library(tm) # text mining
+library(RWeka) # needed for creating dtm of phrases
 
-# import data into corpus
+# import data into corpus and remove stop words and punctuation, etc. ------------
 text_corpus <- Corpus(DirSource("DSA_samples/")) # folder of transcribed DSA docs
 
-# remove stop words and punctuation, etc. ------------
 text_corpus <- text_corpus %>% 
   tm_map(content_transformer(tolower)) %>% # change everything to lower case (must use content_transformer, or doc names are removed)
   tm_map(removeWords, stopwords("english")) %>% #remove common english words
@@ -20,9 +19,9 @@ text_corpus <- text_corpus %>%
   tm_map(removePunctuation) %>% 
   tm_map(stripWhitespace) # take out white space from removed words
 
-# convert corpus to document term matrix to data frame ------------
+# convert corpus to document term matrix of phrases to data frame ------------
 
-NgramTokenize <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 4)) # function to make dtm of single words and phrases
+NgramTokenize <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 4)) # function to make dtm of 1-4 word phrases
 dtm <- DocumentTermMatrix(text_corpus, control = list(tokenize = NgramTokenize ))
 
 all_samples <- as.data.frame(as.matrix(dtm)) # convert to data frame
